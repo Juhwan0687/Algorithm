@@ -30,22 +30,22 @@ int main(){
 	
 	printf("\n");
 	
-	int cit[city],out[city];
+	int in[city]={0},out[city]={0};
 	
 	for(int i=1;i<=city;i++){
 		for(int j=1;j<=city;j++){
-			cit[i]=car[i][j];
+			in[i]+=car[j][i];
 		}
 	}
 	
 	for(int i=1;i<=city;i++){
 		for(int j=1;j<=city;j++){
-			out[i]=car[j][i];
+			out[i]+=car[i][j];
 		}
 	}
 	
 	for(int i=1;i<=city;i++){
-		if(cit[i]>0&&cit[i]>out[i]){
+		if(in[i]-out[i]>0){
 			printf("%d ",i);
 		}
 	}
