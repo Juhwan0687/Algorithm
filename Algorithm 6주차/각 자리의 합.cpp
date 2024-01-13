@@ -1,19 +1,20 @@
-#include <cstdio>
+#include <iostream>
 
-int sum=0;
-
-int div(int n);
+int sum(int n);
 
 int main(){
 	int n;
 	
 	scanf("%d",&n);
 	
-	printf("%d",div(n));
+	printf("%d",sum(n));
 }
 
-int div(int n){
-	if(n<10) return sum+n;
-	sum+=n%10;
-	return div(n/10);
+int sum(int n){
+	if(n==0){
+		return 0;
+	}
+	else{
+		return n%10+sum(n/10);
+	}
 }
