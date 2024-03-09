@@ -1,1 +1,1 @@
-# Algorithm Theory 1&2
+# Algorithm Theory
