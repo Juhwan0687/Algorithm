@@ -1,0 +1,48 @@
+#include <iostream>
+#include <algorithm>
+using namespace std;
+
+int arr[11][11];
+bool visit[11];
+int n, ans = 987654321;
+
+void DFS(int st, int mid, int cnt, int sum) {
+	if (cnt == n) {
+		if (arr[mid][st] == 0) {
+			return;
+		}
+		if (ans > sum + arr[mid][st]) {
+			ans = sum + arr[mid][st];
+		}
+		return;
+	}
+
+	for (int i = 0; i < n; i++) {
+		if (!visit[i] && arr[mid][i]) {
+			visit[i] = true;
+			DFS(st, i, cnt + 1, sum + arr[mid][i]);
+			//백트래킹.
+			visit[i] = false;
+		}
+	}
+}
+
+int main() {
+	cin >> n;
+
+	for (int i = 0; i < n; i++) {
+		for (int j = 0; j < n; j++) {
+			cin >> arr[i][j];
+		}
+	}
+
+	for (int i = 0; i < n; i++) {
+		visit[i] = true;
+		DFS(i, i, 1, 0);
+		visit[i] = false;
+	}
+
+	cout << ans;
+
+	return 0;
+}
