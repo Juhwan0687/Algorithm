@@ -1,0 +1,55 @@
+#include <iostream>
+#include <algorithm>
+using namespace std;
+
+//Union_find
+//1. Find(node의 부모노드 - 루트를 찾기) 연산부터 구현
+int parent[1000001]; //i번째 노드의 부모 노드 정보를 저장
+int Find(int node) { //기본코드의 문제점 : 경로가 무한히 길어질 수 있음
+	//해결 코드 : 경로 압축(Find를 통해 찾은 루트를 내 부모로 바로 설정)
+	//자기 자신이 부모로 기록되어 있으면 루트 찾기 성공
+	if (node == parent[node])	return node;
+	//아니라면 node의 부모 탐색
+	//return Find(parent[node]);
+	int t = Find(parent[node]); //Find하면서 만난 모든 값의 부모를 루트로 교체
+	parent[node] = t;
+	return t;
+}
+
+//2. Union(부모노드가 다른 두 집합을 합치기)
+void Union(int x, int y) {
+	//먼저 x의 부모를 찾기
+	x = Find(x);
+	//y의 부모를 찾기
+	y = Find(y);
+	//y의 부모노드를 x로 설정
+	parent[y] = x;
+}
+
+int main() {
+	ios::sync_with_stdio(0);
+	cin.tie(NULL);
+	cout.tie(NULL);
+	int n, m;
+	cin >> n >> m;
+	//처음 시작할 때는 각 노드의 부모는 자기 자신으로 초기화
+	for (int i = 0; i <= n; i++) {
+		parent[i] = i;
+	}
+	while (m--) {
+		int x, a, b;
+		cin >> x >> a >> b;
+		if (x == 0)	Union(a, b);
+		else {
+			a = Find(a);
+			b = Find(b);
+			if (a == b) {
+				cout << "YES\n";
+			}
+			else {
+				cout << "NO\n";
+			}
+		}
+	}
+	return 0;
+}
