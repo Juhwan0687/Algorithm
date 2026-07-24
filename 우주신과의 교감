@@ -1,0 +1,72 @@
+#include <iostream>
+#include <algorithm>
+#include <vector>
+#include <cmath>
+using namespace std;
+
+int parent[101];
+
+struct S {
+	int s, e;
+	double c;
+};
+
+vector<S> graph;
+vector<pair<double, double>> star;
+
+double GetDist(int a, int b) {
+	return sqrt(pow((star[a].first - star[b].first), 2) + pow((star[a].second - star[b].second), 2));
+}
+
+bool cmp(S left, S right) {
+	if (left.c == right.c)
+		return left.s < right.s;
+	return left.c < right.c;
+}
+
+int Find(int x) {
+	if (parent[x] == x)
+		return x;
+	return parent[x] = Find(parent[x]);
+}
+
+void Union(int x, int y) {
+	x = Find(x), y = Find(y);
+	parent[x] = y;
+}
+
+int main() {
+	int n, m;
+	cin >> n >> m;
+	for (int i = 0; i < n; i++) {
+		double x, y;
+		cin >> x >> y;
+		star.push_back({ x,y });
+	}
+	for (int i = 0; i < m; i++) {
+		double x, y;
+		cin >> x >> y;
+		Union(x, y);
+	}
+	for (int i = 0; i < n; i++) {
+		for (int j = i + 1; j < n; j++) {
+			graph.push_back({ i,j,GetDist(i,j) });
+		}
+	}
+	sort(graph.begin(), graph.end(), cmp);
+	cout << fixed;
+	cout.precision(2);
+	double ans = 0;
+	for (int i = 0; i < n; i++) {
+		parent[i] = i;
+	}
+	for (int i = 0; i < graph.size(); i++) {
+		S t = graph[i];
+		int x = Find(t.s), y = Find(t.e);
+		if (x != y)
+			if (Find(t.s) != Find(t.e))
+				Union(t.s, t.e), ans += t.c;
+	}
+	cout << ans;
+	return 0;
+}
