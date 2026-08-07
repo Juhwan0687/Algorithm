@@ -1,0 +1,55 @@
+#include <iostream>
+#include <algorithm>
+#include <vector>
+using namespace std;
+
+struct Bus {
+    int a, b;
+    long long int c;
+};
+
+long long int d[501];
+const int INF = 987654321;
+
+vector<Bus> v;
+
+int main() {
+    int t;
+    cin >> t;
+    while (t--) {
+        int n, m, w;
+        cin >> n >> m >> w;
+        for (int i = 0; i < m; i++) {
+            int a, b, c;
+            cin >> a >> b >> c;
+            v.push_back({ a,b,c });
+        }
+        for (int i = 0; i < w; i++) {
+            int a, b, c;
+            cin >> a >> b >> c;
+            v.push_back({ a,b,c * (-1) });
+        }
+        for (int i = 1; i <= n; i++) {
+            d[i] = INF;
+        }
+        d[1] = 0;
+        bool nc = false;
+        for (int i = 1; i <= n; i++) {
+            for (int j = 0; j < m + w; j++) {
+                int st = v[j].a, ed = v[j].b;
+                long long int cost = v[j].c;
+                if (d[st] != INF && d[ed] > d[st] + cost) {
+                    d[ed] = d[st] + cost;
+                    if (i == n || d[ed] < d[1])
+                        nc = true;
+                }
+            }
+        }
+        if (nc)
+            cout << "YES\n";
+        else {
+            cout << "NO\n";
+        }
+    }
+    return 0;
+}
